@@ -143,19 +143,19 @@ function getBook(id) {
   return data.find((d) => d.id === id);
 }
 
-
 //Destructuring with objects
-const book = getBook(1);
+const book = getBook(3);
 book;
 
 // const title = book.title;
 // const author = book.author;
 
-const {title, author, pages, publicationDate, genres, hasMovieAdaptation} = book;
+const { title, author, pages, publicationDate, genres, hasMovieAdaptation } =
+  book;
 
 title;
 author;
-console.log(author, title)
+console.log(author, title);
 
 //Destructuring with arrays
 // const primaryGenre = genres[0];
@@ -163,9 +163,9 @@ console.log(author, title)
 
 const [primaryGenre, secondaryGenre, ...otherGenres] = genres;
 console.log(primaryGenre, secondaryGenre, otherGenres);
-/**/
+
 //Spread operator takes genres out of the array one-by-one
-const newGenres = [...genres, 'epic fantasy'];
+const newGenres = [...genres, "epic fantasy"];
 newGenres;
 
 //Spread operator on objects//Takes of all the elements of the object to the new object
@@ -173,13 +173,73 @@ const updateBook = {
   ...book,
 
   //Adding a new property
-  moviePublicationDate: '2001-12-19',
+  moviePublicationDate: "2001-12-19",
 
   //Overwriting an existing property
   pages: 1,
 };
 updateBook;
 
+//Arrow functions
+// function getYear(str) {
+//   return str.split("-")[0];
+// }
+/*
+//ARROW FUNCTION
+const getYear = (str, a, b) => {
+  return str.split("-")[0];
+};
+const getYear2 = (str, a, b) => str.split("-")[0];
+console.log(getYear(publicationDate));
+console.log(getYear2(publicationDate));
+
 //Template literal
-const summary = `${title}, a ${pages}-page long book, was written by ${author}, and published in ${publicationDate.split('-')[0]}`;
+const summary = `${title}, a ${pages}-page long book, was written by ${author}, and published in ${
+  publicationDate.split("-")[0]
+},
+the book has ${
+  hasMovieAdaptation ? "" : "not"
+} been adapted as a movie (${getYear(publicationDate)})`;
 summary;
+
+//Ternary operator
+const pagesRange = pages > 1000 ? "over thousand" : "less than thousand";
+pagesRange;
+
+//Logical operators/Short circuiting
+
+//&&-operator short circuits when the first value is false and then immediately return the first value
+console.log(true && "some string");
+console.log(false && "some string");
+console.log(hasMovieAdaptation && "this book has a movie");
+
+//falsy values: 0, '(empty string), null, undefined
+
+//||-operator short circuits when the first value is true and returns it (opposite &&)
+console.log(true || "some string");
+console.log(false || "some string");
+
+console.log(book.translations.spanish);
+
+const spanishTranslation = book.translations.spanish || "NOT TRANSLATED";
+spanishTranslation;
+
+console.log(book.reviews.librarything.reviewsCount);
+const countWrong = book.reviews.librarything.reviewsCount || "no data";
+countWrong;
+
+//Nullish coaleshing operator/Short circuits for falsy values/Only return the second value if the first
+//value is null or undefined BUT NOT when it is 0 or ''(empty string)
+const count = book.reviews.librarything.reviewsCount ?? "no data";
+count;
+*/
+//Optional chaining x Nullish coaleshing operator
+//js no longer tries to read reviwesCount out of the undefined value
+function getTotalReviewCount(book) {
+  const goodreads = book.reviews.goodreads.reviewsCount;
+  const librarything = book.reviews.librarything?.reviewsCount ?? 0;
+  librarything;
+
+  return goodreads + librarything;
+}
+console.log(getTotalReviewCount(book));
