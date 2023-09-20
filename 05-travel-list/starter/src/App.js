@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const initialItems = [
   { id: 1, description: "Passports", quantity: 2, packed: false },
   { id: 2, description: "Socks", quantity: 12, packed: true },
@@ -18,10 +20,55 @@ function Logo() {
   return <h1>🌴Far Away👜</h1>;
 }
 function Form() {
+  const [description, setDiscription] = useState("");
+  const [quantity, setQuantity] = useState(1);
+
+  function HandleSubmit(event) {
+    event.preventDefault();
+
+    if (!description) return;
+
+    const newItem = {
+      description,
+      quantity,
+      packed: false,
+      id: Date.now(),
+    };
+    console.log(newItem);
+
+    setDiscription("");
+    setQuantity(1);
+  }
   return (
-    <div className="add-form">
+    <form className="add-form" onSubmit={HandleSubmit}>
       <h3>What do you need for your trip? 😍</h3>
-    </div>
+      <select
+        value={quantity}
+        onChange={(event) => setQuantity(Number(event.target.value))}
+      >
+        {Array.from({ length: 20 }, (currentValue, index) => index + 1).map(
+          (element) => (
+            <option value={element} key={element}>
+              {element}
+            </option>
+          )
+        )}
+      </select>
+      <input
+        type="text"
+        placeholder="Item..."
+        value={description}
+        onChange={(event) => {
+          //If we type in the input field the change event fired off
+          //we can react top that event with onChange event handler
+          //after passing the function it receives the event
+          //on the event the event.target is the entire element
+          //element.value is thy input we give in
+          setDiscription(event.target.value);
+        }}
+      />
+      <button>Add</button>
+    </form>
   );
 }
 function PackingList() {
@@ -29,7 +76,7 @@ function PackingList() {
     <div className="list">
       <ul>
         {initialItems.map((item) => (
-          <Item item={item} />
+          <Item item={item} key={item.id} />
         ))}
       </ul>
     </div>
@@ -38,14 +85,18 @@ function PackingList() {
 function Item({ item }) {
   return (
     <li>
-      <span style={item.packed ? {
-        textDecoration: 'line-through'
-      } : {}}>
+      <span
+        style={
+          item.packed
+            ? {
+                textDecoration: "line-through",
+              }
+            : {}
+        }
+      >
         {item.quantity} {item.description}
       </span>
-      <button>
-        ❌
-      </button>
+      <button>❌</button>
     </li>
   );
 }
