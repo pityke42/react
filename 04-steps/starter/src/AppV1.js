@@ -4,6 +4,7 @@ const messages = [
   "Apply for jobs 💼",
   "Invest your new income 🤑",
 ];
+
 export default function App() {
   return (
     <div>
@@ -11,6 +12,7 @@ export default function App() {
     </div>
   );
 }
+
 function Steps() {
   const [step, setStep] = useState(1);
 
@@ -43,12 +45,22 @@ function Steps() {
             Step {step} : {messages[step - 1]}
           </p>
           <div className="buttons">
-            <Button textColor="#fff" bgColor="#7450f2" onClick={handlePervious}>
-              <span>👈</span>Previous
-            </Button>
-            <Button textColor="#fff" bgColor="#7450f2" onClick={handleNext}>
-              Next<span>👉</span>
-            </Button>
+            <button
+              style={{
+                backgroundColor: "#7450f2",
+                color: "#fff",
+              }}
+              onClick={handlePervious}>
+              Previous
+            </button>
+            <button
+              style={{
+                backgroundColor: "#7450f2",
+                color: "#fff",
+              }}
+              onClick={handleNext}>
+              Next
+            </button>
           </div>
         </div>
       )}
@@ -56,15 +68,4 @@ function Steps() {
   );
 }
 
-function Button({ textColor, bgColor, onClick, children }) {
-  return (
-    <button
-      style={{
-        backgroundColor: bgColor,
-        color: textColor,
-      }}
-      onClick={onClick}>
-      {children}
-    </button>
-  );
-}
+function Button() {}
